@@ -21,13 +21,13 @@ match = re.search(r'files/([^?]+)\.rds', download_link)
 if match:
     base_filename = match.group(1)
     rds_filename = f"{base_filename}.rds"
-    csv_filename = f"{base_filename}.csv"
+    expression_filename = f"{base_filename}_expression.csv"
     model_csv = f"{base_filename}_model.csv"
     expDesign_csv = f"{base_filename}_expDesign.csv"
     experiment_csv = f"{base_filename}_experiment.csv"
 else:
     rds_filename = "downloaded.rds"
-    csv_filename = "downloaded.csv"
+    expression_filename = "downloaded_expression.csv"
     model_csv = "downloaded_model.csv"
     expDesign_csv = "downloaded_expDesign.csv"
     experiment_csv = "downloaded_experiment.csv"
@@ -48,7 +48,7 @@ robjects.globalenv['pdxe'] = pdxe
 # Extract expression matrix, convert, export
 exprs_df_r = robjects.r('as.data.frame(exprs(pdxe@molecularProfiles$RNASeq))')
 exprs_df = pandas2ri.rpy2py(exprs_df_r)
-exprs_df.to_csv(csv_filename, index=True)
+exprs_df.to_csv(expression_filename, index=True)
 
 # Extract model matrix, convert, export
 model_df_r = robjects.r('as.data.frame(pdxe@model)')
